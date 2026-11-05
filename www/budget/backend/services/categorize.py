@@ -9,7 +9,7 @@ lit dans le libellé, dont le format est régulier :
     CARTE X1234 REMBT 18/09 AMAZON PAYMENTS …              remboursement carte
     CARTE X1234 RETRAIT DAB 25/09 17H34 …                  retrait
     CARTE X1234 TRANSF 14/08 Revolut**0000*                transfert carte
-    PRELEVEMENT EUROPEEN 91… DE: BOUYGUES TELECOM ID: …    prélèvement
+    PRELEVEMENT EUROPEEN 91… DE: TELECOM MOBILE ID: …    prélèvement
     VIR RECU 91…S DE: ACME EUROPE REF: …                  virement reçu
     000001 VIR INSTANTANE EMIS WERO POUR: X Y IBAN: …      virement émis
     VIREMENT DECLIC SEUIL VERS COMPTE 00000 …              épargne automatique

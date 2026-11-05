@@ -177,7 +177,7 @@ def reparse_all() -> None:
 
 
 def same_party(a: str | None, b: str | None) -> bool:
-    """Le libellé court tronque la contrepartie (« …Franfinanc » / « …Franfinanc E ») :
+    """Le libellé court tronque la contrepartie (« …Financement » / « …Financement E ») :
     égales, ou l'une commence l'autre au mot près."""
     a, b = (a or "").lower().split(), (b or "").lower().split()
     if len(a) > len(b):

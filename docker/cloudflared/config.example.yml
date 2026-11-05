@@ -1,0 +1,9 @@
+# Seule la page de connexion passe par le tunnel. Les applications n'y figurent pas :
+# c'est leur absence ici qui les réserve au VPN.
+tunnel: <TUNNEL_ID>
+credentials-file: /etc/cloudflared/creds.json
+
+ingress:
+  - hostname: example.com
+    service: http://nginx:80
+  - service: http_status:404
