@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Budget — HomeLab</title>
+<link rel="stylesheet" href="/assets/ui/ui.css?v=2">
+<link rel="stylesheet" href="/assets/css/style.css?v=2">
+<script src="/assets/ui/services.js?v=2"></script>
+<script src="/assets/ui/shell.js?v=2"></script>
+</head>
+<body>
+
+<header class="sf-pagebar">
+    <h1 class="sf-pagebar-title">Budget</h1>
+    <nav class="tabs sections" role="tablist">
+        <button role="tab" data-tab="mois" aria-selected="true">Ce mois</button>
+        <button role="tab" data-tab="operations" aria-selected="false">Opérations</button>
+        <button role="tab" data-tab="fixes" aria-selected="false">Fixes <span class="badge badge-accent" id="sugg-pill" hidden></span></button>
+        <button role="tab" data-tab="reglages" aria-selected="false">Réglages</button>
+    </nav>
+    <div class="sf-pagebar-actions">
+        <span class="sf-pagebar-meta" id="fresh"></span>
+        <button class="btn btn-sm btn-icon" id="sync-btn" title="Synchroniser la banque" aria-label="Synchroniser la banque">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+        </button>
+    </div>
+</header>
+
+<main class="sf-content">
+    <section class="view active" id="view-mois"></section>
+    <section class="view" id="view-operations"></section>
+    <section class="view" id="view-fixes"></section>
+    <section class="view" id="view-reglages"></section>
+</main>
+
+<div id="modal-host"></div>
+<div class="toast-host" id="toast-host" role="status" aria-live="polite"></div>
+
+<script type="module" src="/assets/js/main.js?v=2"></script>
+</body>
+</html>

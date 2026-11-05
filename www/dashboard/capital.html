@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Capital — HomeLab</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/HomeLab.ico">
+    <link rel="stylesheet" href="/assets/ui/ui.css?v=1">
+    <link rel="stylesheet" href="/assets/css/capital.css?v=6">
+    <script src="/assets/ui/services.js?v=1"></script>
+    <script src="/assets/ui/shell.js?v=1"></script>
+    <style>body:not(.authenticated) .sf-content, body:not(.authenticated) .sf-pagebar { visibility: hidden; }</style>
+</head>
+<body>
+<script src="/assets/js/auth-guard.js"></script>
+
+<header class="sf-pagebar">
+    <h1 class="sf-pagebar-title">Capital</h1>
+    <nav class="tabs sections" role="tablist">
+        <button role="tab" data-tab="ensemble" aria-selected="true">Vue d’ensemble</button>
+        <button role="tab" data-tab="PEA" aria-selected="false">PEA</button>
+        <button role="tab" data-tab="CRYPTO" aria-selected="false">Bitcoin</button>
+        <button role="tab" data-tab="PEE" aria-selected="false">PEE</button>
+        <button role="tab" data-tab="mouvements" aria-selected="false">Mouvements</button>
+    </nav>
+    <div class="sf-pagebar-actions">
+        <span class="sf-pagebar-meta" id="fresh"></span>
+        <button class="btn btn-sm btn-icon" id="refresh-btn" title="Rafraîchir les cours" aria-label="Rafraîchir les cours">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg>
+        </button>
+        <button class="btn btn-sm btn-primary" id="add-btn">Mouvement</button>
+    </div>
+</header>
+
+<main class="sf-content">
+    <section class="view active" id="view-ensemble"></section>
+    <section class="view" id="view-compte"></section>
+    <section class="view" id="view-mouvements"></section>
+</main>
+
+<div id="modal-host"></div>
+<div class="toast-host" id="toast-host" role="status" aria-live="polite"></div>
+
+<script type="module" src="/assets/js/capital/main.js?v=5"></script>
+</body>
+</html>

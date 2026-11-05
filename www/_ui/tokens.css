@@ -1,0 +1,161 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   HomeLab UI — jetons de design
+
+   Source unique : www/_ui/. Copié dans chaque application par
+   scripts/sync-ui.sh (ne jamais éditer les copies dans assets/ui/).
+
+   Principes, à ne pas diluer :
+     · neutre et dense : la structure vient des filets 1 px et de l'espacement
+     · une seule couleur d'accent, réservée à l'état actif, au focus et à
+       l'action principale
+     · aucun dégradé, halo, lueur, flou, inclinaison ni emoji
+     · animations ≤ 150 ms, uniquement sur couleur et opacité
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+    color-scheme: light;
+
+    /* Surfaces */
+    --bg:            #f6f7f8;   /* fond de page */
+    --surface:       #ffffff;   /* cartes, barre latérale, tableaux */
+    --surface-2:     #f1f2f4;   /* survol, zones en retrait */
+    --surface-3:     #e8eaed;   /* pistes de jauge, squelettes */
+
+    /* Filets */
+    --border:        #e3e5e8;
+    --border-strong: #cfd3d8;
+
+    /* Texte */
+    --text:          #17191c;
+    --text-2:        #4b5058;
+    --text-3:        #737a84;
+
+    /* Accent unique */
+    --accent:        #2f5bd0;
+    --accent-hover:  #264bb0;
+    --accent-soft:   #edf1fc;
+    --accent-text:   #ffffff;
+
+    /* Signaux */
+    --success:       #1b7f4c;
+    --success-soft:  #e8f5ee;
+    --warning:       #a15c07;
+    --warning-soft:  #fbf1e2;
+    --danger:        #c2362b;
+    --danger-soft:   #fcebe9;
+
+    /* Graphiques : séries catégorielles, du plus au moins important */
+    --chart-1: #2f5bd0;
+    --chart-2: #1a9486;
+    --chart-3: #c88114;
+    --chart-4: #c2466b;
+    --chart-5: #6b5bc4;
+    --chart-6: #4f8a2e;
+    --chart-7: #7a8290;
+    --chart-8: #b25c2c;
+    --chart-grid: #eceef1;
+
+    /* Typographie */
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --fs-xs:  12px;
+    --fs-sm:  13px;
+    --fs-md:  14px;
+    --fs-lg:  16px;
+    --fs-xl:  20px;
+    --fs-2xl: 24px;
+    --lh: 1.5;
+
+    /* Formes */
+    --r-sm: 4px;
+    --r:    6px;
+    --r-lg: 8px;
+    --shadow-pop: 0 1px 2px rgba(16, 18, 22, .06), 0 8px 24px rgba(16, 18, 22, .10);
+    --scrim: rgba(16, 18, 22, .32);
+
+    /* Espacement : grille de 4 px */
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-5: 20px;
+    --s-6: 24px;
+    --s-8: 32px;
+    --s-10: 40px;
+
+    /* Hauteurs de contrôle */
+    --control-h: 32px;
+    --control-h-sm: 28px;
+
+    --ease: 120ms ease;
+}
+
+/* Sombre : même page, pas une autre ambiance. Pas de bleu nuit. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg:            #111214;
+        --surface:       #18191c;
+        --surface-2:     #202226;
+        --surface-3:     #2a2c31;
+        --border:        #2a2c31;
+        --border-strong: #3a3d44;
+        --text:          #ececee;
+        --text-2:        #b3b7be;
+        --text-3:        #868b94;
+        --accent:        #7195f2;
+        --accent-hover:  #8ba8f5;
+        --accent-soft:   #1e2536;
+        --accent-text:   #0d0f14;
+        --success:       #4cc38a;
+        --success-soft:  #16261e;
+        --warning:       #e0a24a;
+        --warning-soft:  #2a2114;
+        --danger:        #f07167;
+        --danger-soft:   #2e1a18;
+        --chart-1: #7195f2;
+        --chart-2: #3fb8a8;
+        --chart-3: #e0a24a;
+        --chart-4: #e27593;
+        --chart-5: #9c8ff0;
+        --chart-6: #7fb85a;
+        --chart-7: #9aa1ad;
+        --chart-8: #e08a5a;
+        --chart-grid: #232529;
+        --shadow-pop: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .45);
+        --scrim: rgba(0, 0, 0, .55);
+    }
+}
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:            #111214;
+    --surface:       #18191c;
+    --surface-2:     #202226;
+    --surface-3:     #2a2c31;
+    --border:        #2a2c31;
+    --border-strong: #3a3d44;
+    --text:          #ececee;
+    --text-2:        #b3b7be;
+    --text-3:        #868b94;
+    --accent:        #7195f2;
+    --accent-hover:  #8ba8f5;
+    --accent-soft:   #1e2536;
+    --accent-text:   #0d0f14;
+    --success:       #4cc38a;
+    --success-soft:  #16261e;
+    --warning:       #e0a24a;
+    --warning-soft:  #2a2114;
+    --danger:        #f07167;
+    --danger-soft:   #2e1a18;
+    --chart-1: #7195f2;
+    --chart-2: #3fb8a8;
+    --chart-3: #e0a24a;
+    --chart-4: #e27593;
+    --chart-5: #9c8ff0;
+    --chart-6: #7fb85a;
+    --chart-7: #9aa1ad;
+    --chart-8: #e08a5a;
+    --chart-grid: #232529;
+    --shadow-pop: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .45);
+    --scrim: rgba(0, 0, 0, .55);
+}

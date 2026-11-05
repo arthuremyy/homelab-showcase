@@ -1,0 +1,41 @@
+/* Accueil — mise en page propre à la page ; tout le reste vient de /assets/ui/ui.css. */
+
+.home-kpis { margin-bottom: 32px; }
+.home-section { margin-bottom: 32px; }
+.home-hint { font-size: var(--fs-xs); margin-left: auto; }
+
+.app-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.app-tile {
+    display: grid; grid-template-columns: 32px 1fr auto; gap: 2px 12px; align-items: center;
+    padding: 14px 16px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
+    color: var(--text); text-decoration: none;
+    transition: border-color var(--ease), background var(--ease);
+}
+.app-tile:hover { border-color: var(--border-strong); background: var(--surface-2); text-decoration: none; }
+.app-icon {
+    grid-row: span 2; width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: var(--r); color: var(--text-2); background: var(--surface);
+}
+.app-icon svg { width: 16px; height: 16px; }
+.app-name { font-weight: 600; font-size: var(--fs-md); display: flex; align-items: center; gap: 8px; min-width: 0; }
+.app-desc { grid-column: 2 / 4; font-size: var(--fs-xs); color: var(--text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-tile .dot { justify-self: end; }
+.app-tile.is-unreachable, .ext-table tr.is-unreachable { opacity: .5; }
+.app-tile.is-unreachable { cursor: not-allowed; }
+.app-tile.is-unreachable:hover { background: var(--surface); border-color: var(--border); }
+
+.ext-table td:first-child a { display: inline-flex; align-items: center; gap: 10px; color: var(--text); font-weight: 500; }
+.ext-table td:first-child svg { width: 16px; height: 16px; color: var(--text-3); }
+.ext-table .ext-host { color: var(--text-3); font-size: var(--fs-xs); }
+.ext-table .ext-open { width: 12px; height: 12px; color: var(--text-3); }
+.ext-table td:last-child { white-space: nowrap; }
+.ext-state { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--text-3); }
+
+@media (max-width: 640px) {
+    .hide-sm { display: none; }
+}

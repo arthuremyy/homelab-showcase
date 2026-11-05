@@ -1,0 +1,113 @@
+/* Capital — styles propres à l'application, sur les jetons de /assets/ui/ui.css.
+   Aucune couleur en dur : uniquement var(--…). */
+
+[hidden] { display: none !important; }
+.view { display: none; }
+.view.active { display: flex; flex-direction: column; gap: var(--s-4); }
+.dim { color: var(--text-3); }
+.pos { color: var(--success); }
+.neg { color: var(--danger); }
+.warn { color: var(--warning); }
+.small { font-size: var(--fs-xs); margin-top: var(--s-3); }
+.sub { display: block; font-size: var(--fs-xs); color: var(--text-3); font-weight: 400; }
+.sub.warn { color: var(--warning); }
+h4 { font-size: var(--fs-sm); font-weight: 600; margin: var(--s-4) 0 var(--s-2); }
+
+/* ── Alerte de pointage ──────────────────────────────────────────────────── */
+.banner { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); justify-content: space-between; }
+.banner .acts { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+
+/* ── Chiffre clé ─────────────────────────────────────────────────────────── */
+.hero { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--s-4) var(--s-8); }
+.hero-main { flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.hero-value {
+    font-size: calc(var(--fs-2xl) * 1.5); font-weight: 600; line-height: 1.1;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; overflow-wrap: anywhere;
+}
+.hero-side { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-6); margin: 0; }
+.hero-side dt { font-size: var(--fs-xs); font-weight: 500; color: var(--text-3); }
+.hero-side dd { margin: 2px 0 0; font-size: var(--fs-lg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hero-side small, .account-card small { font-size: var(--fs-xs); font-weight: 500; }
+.hero-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.check-line { display: flex; align-items: center; gap: var(--s-2); font-size: var(--fs-sm); margin-top: 4px; }
+
+/* ── Cartes de compte ────────────────────────────────────────────────────── */
+.accounts { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.account-card {
+    text-align: left; font: inherit; color: inherit; cursor: pointer; padding: 0;
+    transition: border-color var(--ease);
+}
+.account-card:hover, .account-card:focus-visible { border-color: var(--accent); outline: none; }
+.account-card .card-body { gap: 4px; font-size: var(--fs-sm); }
+.account-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
+.account-value { font-size: var(--fs-xl); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ── Courbe ──────────────────────────────────────────────────────────────── */
+.card-header .legend { margin-left: auto; }
+.legend { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--s-3); font-size: var(--fs-xs); color: var(--text-2); }
+.legend li { display: flex; align-items: center; gap: 6px; }
+.sw { display: inline-block; width: 14px; height: 0; border-top: 2px solid var(--chart-1); flex: none; }
+.sw.invested { border-top: 2px dashed var(--text-3); }
+.chart-host { position: relative; min-height: 260px; }
+.chart { display: block; max-width: 100%; height: auto; overflow: visible; }
+.chart .grid { stroke: var(--chart-grid); stroke-width: 1; }
+.chart .axis { fill: var(--text-3); font-size: 11px; font-variant-numeric: tabular-nums; }
+.chart path { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .value { stroke: var(--chart-1); }
+.chart .invested { stroke: var(--text-3); stroke-dasharray: 5 4; }
+.chart .cursor line { stroke: var(--border-strong); stroke-width: 1; }
+.chart .cursor circle { fill: var(--chart-1); stroke: var(--surface); stroke-width: 2; }
+.chart .hit { fill: transparent; cursor: crosshair; touch-action: pan-y; }
+.chart-tip {
+    position: absolute; top: 0; pointer-events: none; z-index: 2;
+    display: flex; flex-direction: column; gap: 2px; padding: 8px 10px;
+    font-size: var(--fs-xs); font-variant-numeric: tabular-nums; white-space: nowrap;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-pop);
+}
+.chart-tip span { display: flex; align-items: center; gap: 6px; color: var(--text-2); }
+
+/* ── Répartition ─────────────────────────────────────────────────────────── */
+.alloc { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
+.alloc li { display: grid; grid-template-columns: 1fr auto 52px; gap: 4px var(--s-3); font-size: var(--fs-sm); align-items: baseline; }
+.alloc .meter { grid-column: 1 / -1; }
+.alloc b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.alloc .pct { text-align: right; font-variant-numeric: tabular-nums; }
+.alloc .meter > span { background: var(--chart-1); }
+
+/* ── Sections repliées (briefing, alertes) ───────────────────────────────── */
+.fold > summary { cursor: pointer; list-style: none; border-bottom: 0; }
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary::after { content: "+"; margin-left: auto; color: var(--text-3); }
+.fold[open] > summary { border-bottom: 1px solid var(--border); }
+.fold[open] > summary::after { content: "−"; }
+.fold p { font-size: var(--fs-sm); line-height: var(--lh); }
+
+/* ── Listes et tableaux ──────────────────────────────────────────────────── */
+.rows { list-style: none; margin: 0; padding: 0; }
+.row { display: flex; align-items: center; gap: var(--s-3); padding: 8px 0; font-size: var(--fs-sm); border-bottom: 1px solid var(--border); }
+.row:last-child { border-bottom: 0; }
+.row .grow { flex: 1 1 auto; min-width: 0; }
+.row b { font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+label.row { cursor: pointer; }
+.table.clickable tbody tr { cursor: pointer; }
+.table.clickable tbody tr:focus-visible td { background: var(--surface-2); outline: none; }
+.table tfoot td { padding: 10px 12px; font-size: var(--fs-xs); color: var(--text-3); border-top: 1px solid var(--border); }
+.table .num b { font-weight: 600; }
+
+/* ── Formulaires ─────────────────────────────────────────────────────────── */
+.field > span:first-child { font-size: var(--fs-sm); font-weight: 500; color: var(--text-2); }
+.modal-wide { max-width: 760px; }
+.modal-body { max-height: calc(100vh - 180px); overflow-y: auto; }
+.check-input .input { width: 130px; }
+.check { display: flex; align-items: flex-start; gap: 8px; margin-top: var(--s-4); font-size: var(--fs-sm); }
+.check input { margin-top: 3px; }
+
+/* ── Petits écrans ───────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .hero-value { font-size: calc(var(--fs-2xl) * 1.25); }
+    .card-header .segmented { width: 100%; }
+    .check-input .input { width: 96px; }
+    .table td, .table th { padding: 8px; }
+}
+.modal-body .grid { margin-bottom: var(--s-4); gap: var(--s-3) var(--s-4); }
+.modal-body .grid > .field { margin-bottom: 0; }

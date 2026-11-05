@@ -1,0 +1,10 @@
+fastapi==0.135.1
+uvicorn==0.41.0
+httpx==0.28.1
+numpy==2.2.3
+pydantic==2.10.6
+python-dotenv==1.0.1
+python-multipart==0.0.33
+PyJWT==2.15.1
+defusedxml==0.7.1
+pypdf==6.21.4

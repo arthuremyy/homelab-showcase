@@ -1,0 +1,178 @@
+/* HomeLab UI — ossature commune : barre latérale, barre de page, contenu.
+   Toutes les classes sont préfixées sf- pour ne jamais heurter une application. */
+
+:root {
+    --sf-nav-w: 232px;
+    --sf-top: 0px;            /* hauteur de la barre mobile, 0 sur ordinateur */
+    --sf-pagebar-h: 56px;
+    --sf-sticky: calc(var(--sf-top) + var(--sf-pagebar-h));   /* sous la barre de page */
+}
+html[data-sf-nav="collapsed"] { --sf-nav-w: 56px; }
+
+/* La place de la barre est réservée avant le rendu JS : pas de saut de mise en page. */
+html.sf-has-shell body { padding-left: var(--sf-nav-w); }
+html.sf-has-shell body::before {
+    content: ""; position: fixed; z-index: 99; inset: 0 auto 0 0; width: var(--sf-nav-w);
+    background: var(--surface); border-right: 1px solid var(--border);
+}
+
+/* ── Barre latérale ──────────────────────────────────────────────────────── */
+.sf-sidebar {
+    position: fixed; z-index: 100; inset: 0 auto 0 0; width: var(--sf-nav-w);
+    display: flex; flex-direction: column;
+    background: var(--surface); border-right: 1px solid var(--border);
+    font-size: var(--fs-sm);
+}
+.sf-brand {
+    display: flex; align-items: center; gap: 10px;
+    height: var(--sf-pagebar-h); padding: 0 16px; flex: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text); font-weight: 600; font-size: var(--fs-md);
+    text-decoration: none; white-space: nowrap; overflow: hidden;
+}
+.sf-brand:hover { text-decoration: none; }
+.sf-mark {
+    width: 24px; height: 24px; flex: none;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--r); background: var(--text); color: var(--surface);
+    font-size: 13px; font-weight: 700; letter-spacing: -.02em;
+}
+
+.sf-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 8px 8px 16px; scrollbar-width: thin; }
+.sf-group { margin-top: 16px; }
+.sf-group-title {
+    display: flex; align-items: center; gap: 6px;
+    height: 28px; padding: 0 8px;
+    font-size: var(--fs-xs); font-weight: 500; color: var(--text-3);
+    white-space: nowrap; list-style: none; user-select: none;
+}
+summary.sf-group-title { cursor: pointer; border-radius: var(--r-sm); }
+summary.sf-group-title:hover { color: var(--text-2); }
+summary.sf-group-title::-webkit-details-marker { display: none; }
+.sf-group-title .sf-chevron { margin-left: auto; width: 14px; height: 14px; transition: transform var(--ease); }
+details.sf-group:not([open]) .sf-chevron { transform: rotate(-90deg); }
+.sf-group-note { margin-left: auto; font-weight: 400; }
+details.sf-group .sf-group-note + .sf-chevron { margin-left: 6px; }
+
+.sf-item {
+    display: flex; align-items: center; gap: 10px;
+    height: 32px; padding: 0 8px; margin: 1px 0;
+    color: var(--text-2); border-radius: var(--r);
+    white-space: nowrap; text-decoration: none;
+    transition: background var(--ease), color var(--ease);
+}
+.sf-item:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
+.sf-item svg { width: 16px; height: 16px; color: var(--text-3); }
+.sf-item:hover svg { color: var(--text-2); }
+.sf-item.active { background: var(--accent-soft); color: var(--text); font-weight: 500; }
+.sf-item.active svg { color: var(--accent); }
+.sf-item .sf-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.sf-item .sf-ext { width: 12px; height: 12px; color: var(--text-3); opacity: 0; transition: opacity var(--ease); }
+.sf-item:hover .sf-ext { opacity: 1; }
+.sf-item.is-unreachable { opacity: .45; cursor: not-allowed; }
+.sf-item.is-unreachable:hover { background: none; color: var(--text-2); }
+
+.sf-foot {
+    flex: none; display: flex; gap: 2px; align-items: center;
+    padding: 8px; border-top: 1px solid var(--border);
+}
+.sf-foot-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 32px; min-width: 32px; padding: 0 8px;
+    color: var(--text-3); background: none; border: 0; border-radius: var(--r);
+    font-size: var(--fs-sm); white-space: nowrap;
+    transition: background var(--ease), color var(--ease);
+}
+.sf-foot-btn:hover { background: var(--surface-2); color: var(--text); }
+.sf-foot-btn svg { width: 16px; height: 16px; }
+.sf-foot-btn.sf-logout { margin-left: auto; }
+
+/* Rail replié : icônes seules */
+html[data-sf-nav="collapsed"] .sf-brand { padding: 0 16px; }
+html[data-sf-nav="collapsed"] .sf-brand-name,
+html[data-sf-nav="collapsed"] .sf-label,
+html[data-sf-nav="collapsed"] .sf-ext,
+html[data-sf-nav="collapsed"] .sf-group-title > span,
+html[data-sf-nav="collapsed"] .sf-group-title .sf-chevron,
+html[data-sf-nav="collapsed"] .sf-foot-label { display: none; }
+html[data-sf-nav="collapsed"] .sf-group-title { height: 1px; padding: 0; margin: 0 8px 8px; background: var(--border); }
+html[data-sf-nav="collapsed"] details.sf-group > .sf-item,
+html[data-sf-nav="collapsed"] details.sf-group:not([open]) > .sf-item { display: flex; }
+html[data-sf-nav="collapsed"] .sf-item { justify-content: center; padding: 0; }
+html[data-sf-nav="collapsed"] .sf-foot { flex-direction: column; }
+html[data-sf-nav="collapsed"] .sf-foot-btn.sf-logout { margin-left: 0; }
+html[data-sf-nav="collapsed"] .sf-collapse svg { transform: rotate(180deg); }
+
+/* ── Barre mobile ────────────────────────────────────────────────────────── */
+.sf-topbar { display: none; }
+.sf-scrim { display: none; }
+
+@media (max-width: 768px) {
+    :root, html[data-sf-nav="collapsed"] { --sf-nav-w: 264px; --sf-top: 48px; }
+    html.sf-has-shell body { padding-left: 0; padding-top: var(--sf-top); }
+    html.sf-has-shell body::before { width: auto; inset: 0 0 auto 0; height: var(--sf-top); border-right: 0; border-bottom: 1px solid var(--border); }
+
+    .sf-topbar {
+        display: flex; align-items: center; gap: 10px;
+        position: fixed; z-index: 110; inset: 0 0 auto 0; height: var(--sf-top);
+        padding: 0 8px 0 4px;
+        background: var(--surface); border-bottom: 1px solid var(--border);
+        font-weight: 600;
+    }
+    .sf-topbar .sf-burger {
+        width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
+        background: none; border: 0; border-radius: var(--r); color: var(--text-2);
+    }
+    .sf-topbar .sf-burger svg { width: 20px; height: 20px; }
+    .sf-topbar .sf-mark { width: 22px; height: 22px; font-size: 12px; }
+
+    .sf-sidebar {
+        z-index: 130; width: var(--sf-nav-w);
+        transform: translateX(-100%); transition: transform 150ms ease;
+        box-shadow: none;
+    }
+    html.sf-drawer-open .sf-sidebar { transform: none; box-shadow: var(--shadow-pop); }
+    html.sf-drawer-open .sf-scrim { display: block; position: fixed; inset: 0; z-index: 120; background: var(--scrim); }
+    html.sf-drawer-open body { overflow: hidden; }
+
+    /* Le rail replié n'existe pas sur mobile : le tiroir est toujours complet. */
+    html[data-sf-nav="collapsed"] .sf-brand-name,
+    html[data-sf-nav="collapsed"] .sf-label,
+    html[data-sf-nav="collapsed"] .sf-group-title > span,
+    html[data-sf-nav="collapsed"] .sf-group-title .sf-chevron,
+    html[data-sf-nav="collapsed"] .sf-foot-label { display: revert; }
+    html[data-sf-nav="collapsed"] .sf-group-title { height: 28px; padding: 0 8px; margin: 0; background: none; display: flex; }
+    html[data-sf-nav="collapsed"] .sf-item { justify-content: flex-start; padding: 0 8px; }
+    html[data-sf-nav="collapsed"] .sf-foot { flex-direction: row; }
+    html[data-sf-nav="collapsed"] .sf-foot-btn.sf-logout { margin-left: auto; }
+    .sf-collapse { display: none !important; }
+}
+
+/* ── Barre de page ───────────────────────────────────────────────────────── */
+.sf-pagebar {
+    position: sticky; top: var(--sf-top); z-index: 50;
+    display: flex; align-items: center; gap: 20px;
+    height: var(--sf-pagebar-h); padding: 0 24px;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.sf-pagebar-title { font-size: var(--fs-lg); font-weight: 600; white-space: nowrap; }
+.sf-pagebar .tabs { align-self: stretch; }
+.sf-pagebar .tabs > button, .sf-pagebar .tabs > a { min-height: 0; height: 100%; margin-bottom: -1px; }
+.sf-pagebar-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.sf-pagebar-meta { font-size: var(--fs-xs); color: var(--text-3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 768px) {
+    :root { --sf-pagebar-h: 0px; }
+    .sf-pagebar {
+        position: static; height: auto; min-height: 52px; flex-wrap: wrap;
+        gap: 8px 12px; padding: 10px 16px 0;
+    }
+    .sf-pagebar-title { padding-bottom: 10px; }
+    .sf-pagebar-actions { padding-bottom: 10px; }
+    .sf-pagebar .tabs { order: 3; flex-basis: 100%; height: 40px; margin: 0 -16px; padding: 0 8px; }
+}
+
+/* ── Contenu ─────────────────────────────────────────────────────────────── */
+.sf-content { padding: 24px; max-width: 1440px; }
+.sf-content-narrow { max-width: 1040px; }
+@media (max-width: 768px) { .sf-content { padding: 16px; } }

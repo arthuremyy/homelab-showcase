@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring — HomeLab</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/HomeLab.ico">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#f6f7f8" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="/assets/ui/ui.css?v=1">
+    <link rel="stylesheet" href="/assets/css/monitoring.css?v=13">
+    <script src="/assets/ui/services.js?v=1"></script>
+    <script src="/assets/ui/shell.js?v=1"></script>
+    <script defer src="/assets/js/vendor/chart.umd.min.js"></script>
+    <style>body:not(.authenticated) #app { visibility: hidden; }</style>
+</head>
+<body>
+    <script src="/assets/js/auth-guard.js"></script>
+
+    <header class="sf-pagebar">
+        <h1 class="sf-pagebar-title">Monitoring</h1>
+        <div class="sf-pagebar-actions">
+            <span class="status-badge" id="status-badge"><span class="dot"></span><span id="status-text">Connexion…</span></span>
+        </div>
+    </header>
+
+    <main class="sf-content" id="app">
+
+        <dl class="sys-line">
+            <div><dt>Hôte</dt><dd id="v-host">—</dd></div>
+            <div><dt>Système</dt><dd id="v-os">—</dd></div>
+            <div><dt>Uptime</dt><dd id="v-uptime">—</dd></div>
+            <div><dt>Charge</dt><dd id="v-load" class="num">—</dd></div>
+        </dl>
+
+        <section class="kpis mon-kpis">
+            <div class="kpi">
+                <span class="kpi-label">Processeur</span>
+                <span class="kpi-value" id="c-cpu">—</span>
+                <div class="meter"><span id="b-cpu"></span></div>
+                <span class="kpi-sub" id="s-cpu">—</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Mémoire</span>
+                <span class="kpi-value" id="c-mem">—</span>
+                <div class="meter"><span id="b-mem"></span></div>
+                <span class="kpi-sub" id="s-mem">—</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Swap</span>
+                <span class="kpi-value" id="c-swap">—</span>
+                <div class="meter"><span id="b-swap"></span></div>
+                <span class="kpi-sub" id="s-swap">—</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Disque</span>
+                <span class="kpi-value" id="c-disk">—</span>
+                <div class="meter"><span id="b-disk"></span></div>
+                <span class="kpi-sub" id="s-disk">—</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Réseau</span>
+                <span class="kpi-value" id="c-net">—</span>
+                <span class="net-split">
+                    <span>↓ <span id="s-net-down">—</span></span>
+                    <span>↑ <span id="s-net-up">—</span></span>
+                </span>
+                <span class="kpi-sub" id="s-net-total">—</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Température</span>
+                <span class="kpi-value" id="c-temp">—</span>
+                <div class="meter"><span id="b-temp"></span></div>
+                <span class="kpi-sub" id="s-temp">—</span>
+            </div>
+        </section>
+
+        <section class="card mon-block">
+            <div class="card-header">
+                <span class="card-title">Historique</span>
+                <div class="segmented" role="group" aria-label="Période">
+                    <button class="period-btn active" data-p="live">Live</button>
+                    <button class="period-btn" data-p="1h">1 h</button>
+                    <button class="period-btn" data-p="6h">6 h</button>
+                    <button class="period-btn" data-p="24h">24 h</button>
+                    <button class="period-btn" data-p="7d">7 j</button>
+                    <button class="period-btn" data-p="30d">30 j</button>
+                </div>
+                <span class="card-actions sf-pagebar-meta" id="update-info">Temps réel — 1 s</span>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-box">
+                    <div class="chart-hdr"><h3>Processeur</h3><span>%</span></div>
+                    <div class="chart-wrap"><canvas id="chart-cpu"></canvas></div>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-hdr"><h3>Mémoire</h3><span>%</span></div>
+                    <div class="chart-wrap"><canvas id="chart-mem"></canvas></div>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-hdr"><h3>Réseau</h3><span>Mo/s</span></div>
+                    <div class="chart-wrap"><canvas id="chart-net"></canvas></div>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-hdr"><h3>Disque E/S</h3><span>Mo/s</span></div>
+                    <div class="chart-wrap"><canvas id="chart-dio"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card mon-block">
+            <div class="card-header">
+                <span class="card-title">Conteneurs</span>
+                <span class="badge" id="ct-count">0</span>
+            </div>
+            <div class="table-wrap">
+                <table class="table ct-table">
+                    <thead><tr><th>Nom</th><th>État</th><th class="num">CPU</th><th class="num">Mémoire</th><th class="hide-md">Image</th></tr></thead>
+                    <tbody id="ct-grid"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="grid grid-4 mon-block">
+            <div class="card">
+                <div class="card-header"><span class="card-title">Processeur par cœur</span></div>
+                <div class="card-body cores-grid" id="cores-grid"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">Disques</span></div>
+                <div class="card-body" id="disks-list"></div>
+                <div class="card-header card-header-inner"><span class="card-title">Interfaces réseau</span></div>
+                <div class="card-body" id="ifaces"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">Processus — CPU</span></div>
+                <div class="card-body list" id="proc-cpu"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">Processus — mémoire</span></div>
+                <div class="card-body list" id="proc-mem"></div>
+            </div>
+        </section>
+
+        <section class="grid grid-2 mon-block">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Débit — connexion directe</span>
+                    <div class="card-actions"><button class="btn btn-sm st-btn" data-target="host" id="st-btn-host">Lancer</button></div>
+                </div>
+                <div class="card-body">
+                    <div class="st-metrics">
+                        <div><span class="kpi-label">Descendant</span><span class="st-val" id="st-dl-host">—</span><span class="kpi-sub">Mbit/s</span></div>
+                        <div><span class="kpi-label">Montant</span><span class="st-val" id="st-ul-host">—</span><span class="kpi-sub">Mbit/s</span></div>
+                        <div><span class="kpi-label">Latence</span><span class="st-val" id="st-ping-host">—</span><span class="kpi-sub">ms</span></div>
+                    </div>
+                    <div class="st-details" id="st-details-host"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Débit — via VPN</span>
+                    <div class="card-actions"><button class="btn btn-sm st-btn" data-target="vpn" id="st-btn-vpn">Lancer</button></div>
+                </div>
+                <div class="card-body">
+                    <div class="st-metrics">
+                        <div><span class="kpi-label">Descendant</span><span class="st-val" id="st-dl-vpn">—</span><span class="kpi-sub">Mbit/s</span></div>
+                        <div><span class="kpi-label">Montant</span><span class="st-val" id="st-ul-vpn">—</span><span class="kpi-sub">Mbit/s</span></div>
+                        <div><span class="kpi-label">Latence</span><span class="st-val" id="st-ping-vpn">—</span><span class="kpi-sub">ms</span></div>
+                    </div>
+                    <div class="st-details" id="st-details-vpn"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script defer src="/assets/js/monitoring.js?v=7"></script>
+</body>
+</html>

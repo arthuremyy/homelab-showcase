@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion — HomeLab</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/HomeLab.ico">
+    <meta name="theme-color" content="#f6f7f8" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="/assets/ui/ui.css?v=1">
+    <script>
+    // Thème partagé (cookie posé par la barre latérale) — appliqué avant le rendu.
+    (function () {
+        var m = document.cookie.match(/(?:^|; )sf_theme=(light|dark)/);
+        if (m) document.documentElement.setAttribute('data-theme', m[1]);
+    })();
+    </script>
+    <style>
+        body { display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+        .login { width: 100%; max-width: 360px; }
+        .login-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; font-size: var(--fs-lg); font-weight: 600; }
+        .login-mark {
+            width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: var(--r); background: var(--text); color: var(--surface); font-size: 14px; font-weight: 700;
+        }
+        .login-card { padding: 24px; }
+        .login-card h1 { font-size: var(--fs-xl); margin-bottom: 4px; }
+        .login-card > p { color: var(--text-3); font-size: var(--fs-sm); margin-bottom: 20px; }
+        .login-card .notice { margin-bottom: 16px; }
+        .login-card .btn { height: 36px; margin-top: 4px; }
+        .login-card .input { height: 36px; }
+    </style>
+</head>
+<body>
+    <main class="login">
+        <div class="login-brand"><span class="login-mark">S</span>HomeLab</div>
+        <div class="card login-card">
+            <h1>Connexion</h1>
+            <p>Accès réservé.</p>
+            <form id="loginForm" novalidate>
+                <div class="notice notice-danger" id="errorMessage" role="alert" hidden></div>
+                <div class="field">
+                    <label for="username">Utilisateur</label>
+                    <input type="text" id="username" class="input" autocomplete="username" autocapitalize="off" required>
+                </div>
+                <div class="field">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" class="input" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="loginButton">Se connecter</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const errorMessage = document.getElementById('errorMessage');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const params = new URLSearchParams(window.location.search);
+
+        // Cible de retour : chemin local, ou sous-domaine de example.com uniquement.
+        function safeRedirect() {
+            const redirect = params.get('redirect') || '/';
+            // Analyse comme le navigateur : `/\\site` ou une tabulation désignent en réalité un autre hôte.
+            if (redirect.startsWith('/')) {
+                try {
+                    const local = new URL(redirect, window.location.origin);
+                    if (local.origin === window.location.origin) return local.pathname + local.search + local.hash;
+                } catch (e) {}
+                return '/';
+            }
+            try {
+                const u = new URL(redirect);
+                if (u.protocol === 'https:' && (u.hostname === 'example.com' || u.hostname.endsWith('.example.com'))) {
+                    return redirect;
+                }
+            } catch (e) {}
+            return '/';
+        }
+
+        (async () => {
+            // Déconnexion demandée depuis une application d'un autre sous-domaine.
+            if (params.has('logout')) {
+                try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); } catch (e) {}
+                history.replaceState(null, '', '/login.html');
+                return;
+            }
+            // Déjà connecté : on repart directement.
+            try {
+                const res = await fetch('/api/auth/check', { credentials: 'include' });
+                if (res.ok) window.location.href = safeRedirect();
+            } catch (e) {}
+        })();
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.hidden = false;
+        }
+
+        function setLoading(on) {
+            loginButton.disabled = on;
+            loginButton.textContent = on ? 'Connexion…' : 'Se connecter';
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            if (!username || !password) {
+                showError('Renseignez l’utilisateur et le mot de passe.');
+                return;
+            }
+            setLoading(true);
+            errorMessage.hidden = true;
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json().catch(() => ({}));
+                if (response.ok) {
+                    window.location.href = safeRedirect();
+                    return;
+                }
+                showError(data.detail || 'Identifiants incorrects.');
+                passwordInput.value = '';
+                passwordInput.focus();
+            } catch (error) {
+                showError('Erreur réseau. Vérifiez la connexion.');
+            }
+            setLoading(false);
+        });
+
+        usernameInput.focus();
+    </script>
+</body>
+</html>

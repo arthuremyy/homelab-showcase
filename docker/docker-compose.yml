@@ -1,0 +1,101 @@
+# Déploiement de démonstration : applications maison, sans le reste du serveur.
+# Seule la page publique de nginx est publiée, et uniquement en local.
+version: "3.8"
+
+services:
+  docker-proxy:
+    image: tecnativa/docker-socket-proxy:v0.5.0
+    restart: unless-stopped
+    environment:
+      - CONTAINERS=1
+      - INFO=1
+      - IMAGES=1
+      - POST=0
+      - EXEC=0
+      - NETWORKS=0
+      - VOLUMES=0
+      - AUTH=0
+      - SECRETS=0
+      - SWARM=0
+      - SERVICES=0
+      - TASKS=0
+      - NODES=0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks: [docker-api]
+
+  dashboard-api:
+    build: ../backend
+    restart: unless-stopped
+    depends_on: [docker-proxy]
+    volumes:
+      - ../www/dashboard/data:/data
+    environment:
+      - TZ=Europe/Paris
+      - DOCKER_HOST=tcp://docker-proxy:2375
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
+      - DISCORD_WEBHOOK_HEALTH=${DISCORD_WEBHOOK_HEALTH:-}
+    networks: [web, docker-api]
+
+  nginx:
+    image: nginx@sha256:66b50d24288dba67f3d000b31223daefc4868c58d29aaacb6a4ff9771597b5eb
+    restart: unless-stopped
+    depends_on: [dashboard-api]
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ../www/dashboard:/usr/share/nginx/html:ro
+      - ../config/nginx-dashboard.conf:/etc/nginx/conf.d/default.conf:ro
+    networks: [web]
+
+  capital-api:
+    container_name: capital-control
+    build: ../www/capital-control/backend
+    restart: unless-stopped
+    volumes:
+      - ../www/capital-control/data:/data
+    environment:
+      - TZ=Europe/Paris
+      - JWT_SECRET=${JWT_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - DISCORD_WEBHOOK_FINANCE=${DISCORD_WEBHOOK_FINANCE:-}
+    networks: [web]
+
+  job-radar:
+    build: ../www/job-radar
+    restart: unless-stopped
+    user: "1000:1000"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    volumes:
+      - ../www/job-radar/data:/data
+    environment:
+      - TZ=Europe/Paris
+      - JWT_SECRET=${JWT_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - DISCORD_WEBHOOK_JOBS=${DISCORD_WEBHOOK_JOBS:-}
+      - FT_CLIENT_ID=${FT_CLIENT_ID:-}
+      - FT_CLIENT_SECRET=${FT_CLIENT_SECRET:-}
+      - ADZUNA_APP_ID=${ADZUNA_APP_ID:-}
+      - ADZUNA_APP_KEY=${ADZUNA_APP_KEY:-}
+      - JOOBLE_API_KEY=${JOOBLE_API_KEY:-}
+    networks: [web]
+
+  budget:
+    build: ../www/budget
+    restart: unless-stopped
+    volumes:
+      - ../www/budget/data:/data
+    environment:
+      - TZ=Europe/Paris
+      - JWT_SECRET=${JWT_SECRET}
+      - DISCORD_WEBHOOK_FINANCE=${DISCORD_WEBHOOK_FINANCE:-}
+      - EB_APP_ID=${EB_APP_ID:-}
+    networks: [web]
+
+networks:
+  web:
+  docker-api:
+    internal: true

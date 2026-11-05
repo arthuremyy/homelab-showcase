@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil — HomeLab</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/HomeLab.ico">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#f6f7f8" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="/assets/ui/ui.css?v=1">
+    <link rel="stylesheet" href="/assets/css/home.css?v=1">
+    <script src="/assets/ui/services.js?v=1"></script>
+    <script src="/assets/ui/shell.js?v=1"></script>
+    <style>body:not(.authenticated) .sf-content { visibility: hidden; }</style>
+</head>
+<body>
+    <script src="/assets/js/auth-guard.js"></script>
+
+    <header class="sf-pagebar">
+        <h1 class="sf-pagebar-title">Accueil</h1>
+        <div class="sf-pagebar-actions">
+            <span class="sf-pagebar-meta" id="host-meta"></span>
+        </div>
+    </header>
+
+    <main class="sf-content">
+        <section class="kpis home-kpis" aria-label="État du serveur">
+            <div class="kpi">
+                <span class="kpi-label">Processeur</span>
+                <span class="kpi-value" id="k-cpu">—</span>
+                <div class="meter"><span id="m-cpu"></span></div>
+                <span class="kpi-sub" id="s-cpu">&nbsp;</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Mémoire</span>
+                <span class="kpi-value" id="k-mem">—</span>
+                <div class="meter"><span id="m-mem"></span></div>
+                <span class="kpi-sub" id="s-mem">&nbsp;</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Disque médias</span>
+                <span class="kpi-value" id="k-disk">—</span>
+                <div class="meter"><span id="m-disk"></span></div>
+                <span class="kpi-sub" id="s-disk">&nbsp;</span>
+            </div>
+            <div class="kpi">
+                <span class="kpi-label">Conteneurs</span>
+                <span class="kpi-value" id="k-ct">—</span>
+                <span class="kpi-sub" id="s-ct">&nbsp;</span>
+            </div>
+        </section>
+
+        <section class="home-section">
+            <div class="section-head"><h2>Applications</h2></div>
+            <div class="app-grid" id="apps"></div>
+        </section>
+
+        <section class="home-section card">
+            <div class="card-header">
+                <span class="card-title">Services tiers</span>
+                <span class="text-3 home-hint">S’ouvrent dans un nouvel onglet</span>
+            </div>
+            <div class="table-wrap">
+                <table class="table ext-table">
+                    <thead><tr><th>Service</th><th class="hide-sm">Rôle</th><th class="hide-sm">Adresse</th><th>Accès</th><th>État</th></tr></thead>
+                    <tbody id="externals"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="/assets/js/home.js?v=3"></script>
+</body>
+</html>

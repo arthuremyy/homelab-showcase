@@ -1,0 +1,81 @@
+/* Monitoring — mise en page propre à la page ; composants dans /assets/ui/ui.css. */
+
+.status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); color: var(--text-3); }
+.status-badge.connected .dot { background: var(--success); }
+.status-badge.error .dot { background: var(--danger); }
+.status-badge.error { color: var(--danger); }
+
+.sys-line {
+    display: flex; flex-wrap: wrap; gap: 8px 32px;
+    margin-bottom: 16px; font-size: var(--fs-sm);
+}
+.sys-line > div { display: flex; gap: 8px; min-width: 0; }
+.sys-line dt { color: var(--text-3); }
+.sys-line dd { color: var(--text); overflow-wrap: anywhere; }
+
+.mon-kpis { margin-bottom: 16px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+@media (max-width: 1500px) { .mon-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .mon-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.net-split { display: flex; gap: 12px; font-size: var(--fs-xs); color: var(--text-2); font-variant-numeric: tabular-nums; }
+.mon-block { margin-bottom: 16px; }
+
+/* Graphiques */
+.charts-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.chart-box { padding: 12px 16px 16px; min-width: 0; }
+.chart-box:nth-child(odd) { border-right: 1px solid var(--border); }
+.chart-box:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+.chart-hdr { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.chart-hdr h3 { font-size: var(--fs-sm); font-weight: 500; color: var(--text-2); }
+.chart-hdr span { font-size: var(--fs-xs); color: var(--text-3); }
+.chart-wrap { position: relative; height: 180px; }
+
+/* Conteneurs */
+.ct-table td { white-space: nowrap; }
+.ct-table td:first-child { font-weight: 500; }
+.ct-state { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); }
+.ct-image { color: var(--text-3); font-size: var(--fs-xs); max-width: 360px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Cœurs */
+.cores-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
+.core-item { display: grid; grid-template-columns: 1fr auto; gap: 4px; font-size: var(--fs-xs); }
+.core-label { color: var(--text-3); }
+.core-val { font-variant-numeric: tabular-nums; color: var(--text); }
+.core-item .meter { grid-column: 1 / -1; }
+
+/* Listes (disques, processus) */
+.card-header-inner { border-top: 1px solid var(--border); }
+.list-row {
+    display: flex; justify-content: space-between; gap: 12px;
+    font-size: var(--fs-sm); padding: 4px 0;
+}
+.list-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list-val { color: var(--text-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.list .list-row + .list-row { border-top: 1px solid var(--border); }
+#disks-list .meter { margin: 2px 0 10px; }
+
+.iface-row {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 2px 8px; align-items: center;
+    font-size: var(--fs-sm); padding: 4px 0;
+}
+.iface-row + .iface-row { border-top: 1px solid var(--border); }
+.iface-ip { color: var(--text-3); font-size: var(--fs-xs); font-variant-numeric: tabular-nums; }
+.iface-traffic { grid-column: 2 / -1; display: flex; gap: 12px; font-size: var(--fs-xs); color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+/* Test de débit */
+.st-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.st-metrics > div { display: flex; flex-direction: column; gap: 2px; }
+.st-val { font-size: var(--fs-2xl); font-weight: 600; font-variant-numeric: tabular-nums; }
+.st-details { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 12px; font-size: var(--fs-xs); color: var(--text-3); min-height: 18px; }
+.st-details b { font-weight: 500; color: var(--text-2); }
+.st-error { color: var(--danger); }
+
+@media (max-width: 1100px) {
+    .hide-md { display: none; }
+}
+@media (max-width: 720px) {
+    .charts-grid { grid-template-columns: minmax(0, 1fr); }
+    .chart-box:nth-child(odd) { border-right: 0; }
+    .chart-box:not(:last-child) { border-bottom: 1px solid var(--border); }
+    .card-header .segmented { order: 3; }
+    .st-val { font-size: var(--fs-xl); }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Job Radar — HomeLab</title>
+<link rel="stylesheet" href="/assets/ui/ui.css?v=1">
+<link rel="stylesheet" href="/assets/css/style.css?v=8">
+<script src="/assets/ui/services.js?v=1"></script>
+<script src="/assets/ui/shell.js?v=1"></script>
+</head>
+<body>
+
+<header class="sf-pagebar">
+    <h1 class="sf-pagebar-title">Job Radar</h1>
+    <nav class="tabs sections" role="tablist">
+        <button role="tab" data-tab="today" aria-selected="true">Aujourd’hui <span class="pill" hidden></span></button>
+        <button role="tab" data-tab="deck" aria-selected="false">À trier <span class="pill" hidden></span></button>
+        <button role="tab" data-tab="suivi" aria-selected="false">Candidatures <span class="pill" hidden></span></button>
+        <button role="tab" data-tab="liste" aria-selected="false">Toutes les offres</button>
+        <button role="tab" data-tab="profil" aria-selected="false">Réglages</button>
+    </nav>
+    <div class="sf-pagebar-actions">
+        <button class="fresh-chip" id="fresh" data-goto="today"><span class="dot"></span>…</button>
+    </div>
+</header>
+
+<main class="sf-content">
+    <!-- ═══ Aujourd'hui ═══ -->
+    <section class="view active" id="view-today"><div id="today"></div></section>
+
+    <!-- ═══ À trier ═══ -->
+    <section class="view" id="view-deck">
+        <div class="deck-bar">
+            <span class="counter"><b id="left">—</b> à trier</span>
+            <span class="spacer"></span>
+            <select id="f-seuil" class="select" aria-label="Pertinence minimale">
+                <option value="40">pertinence ≥ 40</option>
+                <option value="55">pertinence ≥ 55</option>
+                <option value="70">pertinence ≥ 70</option>
+                <option value="0">toutes</option>
+            </select>
+        </div>
+
+        <div class="stage" id="stage"><p class="blank">Chargement…</p></div>
+
+        <div class="decide" id="decide" hidden>
+            <button class="decide-btn pass" data-do="pass">
+                <kbd>←</kbd><span>Pas pour moi<small>l’offre est écartée</small></span></button>
+            <div class="middle">
+                <button class="btn" data-do="open">Lire l’annonce <kbd>↵</kbd></button>
+            </div>
+            <button class="decide-btn keep" data-do="keep">
+                <span>À postuler<small>rejoint mes candidatures</small></span><kbd>→</kbd></button>
+        </div>
+        <p class="footnote">Glisse la carte, ou utilise <kbd>←</kbd> <kbd>→</kbd> · <kbd>D</kbd> détail · <kbd>Z</kbd> annuler</p>
+    </section>
+
+    <!-- ═══ Candidatures ═══ -->
+    <section class="view" id="view-suivi"><div id="board"></div></section>
+
+    <!-- ═══ Toutes les offres ═══ -->
+    <section class="view" id="view-liste">
+        <div class="toolbar">
+            <input type="search" id="q" class="input" placeholder="Rechercher un intitulé, une entreprise…" autocomplete="off">
+            <select id="l-statut" class="select" aria-label="Statut">
+                <option value="">tous les statuts</option>
+                <option value="nouveau">à trier</option>
+                <option value="vivier">à postuler</option>
+                <option value="candidate">postulé</option>
+                <option value="entretien">entretien</option>
+                <option value="closes">terminées</option>
+                <option value="ecarte">pas pour moi</option>
+            </select>
+            <select id="l-age" class="select" aria-label="Date de publication">
+                <option value="">publiées : toutes</option>
+                <option value="7">moins de 7 jours</option>
+                <option value="30">moins de 30 jours</option>
+            </select>
+            <select id="tri" class="select" aria-label="Tri">
+                <option value="match">par pertinence</option>
+                <option value="date">plus récentes</option>
+                <option value="salary">par salaire</option>
+                <option value="success">par chances</option>
+                <option value="portability">par ouverture</option>
+            </select>
+            <select id="famille" class="select" aria-label="Famille de poste">
+                <option value="">toutes familles</option>
+                <option value="cyber_pur">cyber généraliste</option>
+                <option value="cyber_indus">cyber + industrie</option>
+                <option value="ot_pur">OT / automatisme</option>
+                <option value="hors_cible">hors cible</option>
+            </select>
+            <label class="field-inline"><input type="checkbox" id="l-ot" checked> Masquer l’OT</label>
+            <label class="field-inline"><input type="checkbox" id="l-retirees"> Inclure les annonces retirées</label>
+            <span class="toolbar-total text-3" id="l-total"></span>
+        </div>
+        <ul class="entries" id="entries"></ul>
+    </section>
+
+    <!-- ═══ Réglages ═══ -->
+    <section class="view" id="view-profil"><div id="profil"></div></section>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-label="Détail de l’offre">
+    <div class="drawer-inner" id="drawer-body"></div>
+</aside>
+<div class="note" id="note" hidden role="status" aria-live="polite"></div>
+
+<script type="module" src="/assets/js/main.js?v=8"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+.env
+docker/.env
+*.db
+*.db-shm
+*.db-wal
+*.pem
+*.key
+*.crt
+__pycache__/
+*.pyc
+node_modules/
+www/*/data/
